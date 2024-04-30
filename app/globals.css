@@ -6,6 +6,11 @@ html,body,:root{
   height: 100%;
 }
 
+.cl-cardBox{
+  height: 500px;
+  width: 700px;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
