@@ -20,12 +20,11 @@ interface FormPopoverProps {
 }
 
 const FormPopover = (props: FormPopoverProps) => {
-    const { children, align, side="bottom", sideOffset=0 } = props;
+    const { children, align, side = "bottom", sideOffset = 0 } = props;
 
     const closeRef = useRef<ElementRef<"button">>(null);
     const router = useRouter();
-
-    const {execute,fieldErrors} = useAction(createBoard,{
+    const { execute, fieldErrors } = useAction(createBoard, {
         onSuccess: (data) => {
             toast.success("Board created ✨");
             closeRef.current?.click();
@@ -40,7 +39,8 @@ const FormPopover = (props: FormPopoverProps) => {
     const onSubmit = (formData: FormData) => {
         const title = formData.get("title") as string;
         const image = formData.get("image") as string;
-        execute({title,image});
+
+        execute({ title, image });
     }
 
 
