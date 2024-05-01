@@ -19,7 +19,7 @@ const BoardOptions = (props:BoardOptionsProps) => {
     const router = useRouter();
     const {orgId} = useAuth();
 
-    const {execute} = useAction(deleteBoard,{
+    const {execute,isLoading} = useAction(deleteBoard,{
         onSuccess: (data) => {
             toast.success(`Board "${data.title}" deleted✨`);
             router.push(`/organisation/${orgId}`);
@@ -49,8 +49,8 @@ const BoardOptions = (props:BoardOptionsProps) => {
                     <X className="h-4 w-4" />
                 </Button>
             </PopoverClose>
-            <Button variant={"ghost"} onClick={onClick} className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm">
-                <Trash className="h-4 w-4 mr-2" />
+            <Button disabled={isLoading} variant={"ghost"} onClick={onClick} className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm hover:bg-rose-500/20 hover:text-rose-500 transition">
+                <Trash className="h-4 w-4 mr-2 " />
                 Delete this board
             </Button>
         </PopoverContent>
