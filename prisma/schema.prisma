@@ -25,7 +25,7 @@ model Board {
   imageLinkHTML String   @db.Text
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  List          List[]
+  list          List[]
 }
 
 model List {
@@ -34,7 +34,7 @@ model List {
   order     Int
   boardId   String
   board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
-  Card      Card[]
+  card      Card[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
