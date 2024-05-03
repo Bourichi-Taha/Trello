@@ -8,6 +8,7 @@ import { ListWithCards } from "@/types";
 import { ElementRef, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useEventListener } from "usehooks-ts";
+import ListOptions from "./list-options";
 
 interface ListHeaderProps {
     list: ListWithCards;
@@ -81,6 +82,7 @@ const ListHeader = (props: ListHeaderProps) => {
                     </div>
                 )
             }
+            <ListOptions list={list} onAddCard={()=>{}} />
         </div>
     )
 }
