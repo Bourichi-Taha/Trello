@@ -46,13 +46,13 @@ const FormPicker = (props: FormPickerProps) => {
             } catch (error) {
                 toast.error("Failed to fetch new images from unsplash!💀")
                 console.log(error);
-                setImages([IMAGES]);//TODO add IMAGES const to error case
+                setImages([IMAGES]);
             } finally {
                 setIsLoading(false);
             }
         }
-        // fetchImages();TODO: activate in Production
-        setImages(IMAGES as Array<Record<string, any>>)
+        fetchImages();
+        // setImages(IMAGES as Array<Record<string, any>>)
     }, []);
 
     if (isLoading) {
