@@ -4,15 +4,19 @@ import ListForm from "./list-form";
 import { useEffect, useState } from "react";
 import ListItem from "./list-item";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
+import { useAction } from "@/hooks/use-action";
+import { updateListOrder } from "@/actions/update-list-order";
+import { toast } from "sonner";
+import { updateCardOrder } from "@/actions/update-card-order";
 
 interface ListContainerProps {
   boardId: string;
   lists: ListWithCards[];
 }
 
-function reorder<T>(list:T[], startIndex: number, endIndex: number) {
+function reorder<T>(list: T[], startIndex: number, endIndex: number) {
   const result = Array.from(list);
-  const [removed] = result.splice(startIndex,1);
+  const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
   return result;
 }
@@ -24,12 +28,29 @@ const ListContainer = (props: ListContainerProps) => {
 
   const [listsState, setListsState] = useState(lists);
 
+  const { execute:executeUpdateListOrder } = useAction(updateListOrder, {
+    onSuccess: () => {
+      toast.success(`List reordered✨`);
+    },
+    onError: (error) => {
+      toast.error(error);
+    }
+  });
+  const { execute:executeUpdateCardOrder } = useAction(updateCardOrder, {
+    onSuccess: () => {
+      toast.success(`Card reordered✨`);
+    },
+    onError: (error) => {
+      toast.error(error);
+    }
+  });
+
   useEffect(() => {
     setListsState(lists)
   }, [lists]);
 
   const onDragEnd = (result: any) => {
-    const {destination, source, type} = result;
+    const { destination, source, type } = result;
 
     if (!destination) {
       return;
@@ -42,9 +63,9 @@ const ListContainer = (props: ListContainerProps) => {
 
     //user moves a list
     if (type === "list") {
-      const items = reorder(listsState, source.index, destination.index).map((item, index) => ({...item,order:index}));
+      const items = reorder(listsState, source.index, destination.index).map((item, index) => ({ ...item, order: index }));
       setListsState(items);
-      //TODO integrate server action
+      executeUpdateListOrder({items,boardId});
     }
 
     //user moves a card
@@ -69,16 +90,17 @@ const ListContainer = (props: ListContainerProps) => {
 
       //moving cards in the same list
       if (source.droppableId === destination.droppableId) {
-        const reorderedCards = reorder(sourceList.cards,source.index,destination.index);
-        reorderedCards.forEach((card,idx) => {
+        const reorderedCards = reorder(sourceList.cards, source.index, destination.index);
+        reorderedCards.forEach((card, idx) => {
           card.order = idx;
         });
 
         sourceList.cards = reorderedCards;
 
         setListsState(stateCopy);
-        //TODO triger server action
-      }else{//user moves card to another list
+
+        executeUpdateCardOrder({boardId,items:reorderedCards});
+      } else {//user moves card to another list
         //1.remove card from source list
         const [movedCard] = sourceList.cards.splice(source.index, 1);
         //2.assign new listId to the moved card
@@ -90,11 +112,13 @@ const ListContainer = (props: ListContainerProps) => {
           card.order = idx;
         });
         //5.update the order in the destination list
-        destList.cards.forEach((card,idx)=>{
+        destList.cards.forEach((card, idx) => {
           card.order = idx;
         });
         setListsState(stateCopy);
-        //TODO add server side logic w/server action
+
+        executeUpdateCardOrder({boardId,items:destList.cards});
+
       }
 
     }
