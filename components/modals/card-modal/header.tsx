@@ -39,9 +39,6 @@ const Header = (props:HeaderProps) => {
             toast.error(error);
         }
     });
-    if (fieldErrors?.title) {
-        toast.error(fieldErrors.title?.[0]);
-    }
 
     const onSubmit = (formData:FormData) => {
         const title = formData.get("title") as string;
@@ -58,10 +55,9 @@ const Header = (props:HeaderProps) => {
         <Layout className="h-5 w-5 mt-1 text-neutral-700" />
         <div className="w-full">
             <form action={onSubmit} className="">
-                <FormInput id="title" disabled={isLoading} ref={inputRef} defaultValue={title} onBlur={onBlur} className="font-semibold text-xl px-1 text-neutral-700 bg-transparent border-transparent relative -left-1.5 w-[95%] focus-visible:bg-white focus-visible:border-input mb-0.5 truncate" />
+                <FormInput id="title" disabled={isLoading} ref={inputRef} errors={fieldErrors} defaultValue={title} onBlur={onBlur} className="font-semibold text-xl px-1 text-neutral-700 bg-transparent border-transparent relative -left-1.5 w-[95%] focus-visible:bg-white focus-visible:border-input mb-0.5 truncate" />
                 <input hidden value={card.id} name="id" id="id" />
                 <input hidden value={params.boardId} name="boardId" id="boardId" />
-
             </form>
             <p className="text-sm text-muted-foreground">
                 In list <span className="underline">{card.list.title}</span>

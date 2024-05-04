@@ -25,8 +25,6 @@ const CardForm = forwardRef<HTMLTextAreaElement,CardFormProps>((props,ref) => {
     const params = useParams();
     const formRef = useRef<ElementRef<"form">>(null);
 
-    
-
     const {execute,fieldErrors,isLoading} = useAction(createCard,{
         onSuccess: (data) => {
             toast.success(`Card "${data.title}" created✨`);
@@ -55,7 +53,6 @@ const CardForm = forwardRef<HTMLTextAreaElement,CardFormProps>((props,ref) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             formRef.current?.requestSubmit();
-            console.log("triggered")
         }
     };
 
