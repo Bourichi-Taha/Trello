@@ -69,7 +69,7 @@ const CardForm = forwardRef<HTMLTextAreaElement,CardFormProps>((props,ref) => {
                 <input hidden id="listId" name="listId" value={listId} />
                 <input hidden id="boardId" name="boardId" value={params.boardId} />
                 <div className="flex items-center gap-x-1">
-                    <FormSubmit>
+                    <FormSubmit variant="primary" >
                         Add card
                     </FormSubmit>
                     <Button onClick={disableEditing} size={"sm"} variant={"ghost"}>
