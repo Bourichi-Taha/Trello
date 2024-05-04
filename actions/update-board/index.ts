@@ -6,6 +6,8 @@ import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/create-safe-action";
 import { UpdateBoard } from "./schema";
+import { CreateAuditLog } from "@/lib/create-audit-log";
+import { ACTION, ENTITY_TYPE } from "@prisma/client";
 
 const handler = async (data: InputType):Promise<ReturnType> => {
 
@@ -30,7 +32,15 @@ const handler = async (data: InputType):Promise<ReturnType> => {
             data: {
                 title
             }
-        })
+        });
+
+        await CreateAuditLog({
+            action:ACTION.UPDATE,
+            entityId:board.id,
+            entityTitle:board.title,
+            entityType:ENTITY_TYPE.BOARD
+        });
+
     } catch (error) {
         return {
             error: "Internal Error."

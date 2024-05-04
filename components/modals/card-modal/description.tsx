@@ -38,6 +38,9 @@ const Descreption = (props: DescreptionProps) => {
             queryClient.invalidateQueries({
                 queryKey:["card",data.id]
             });
+            queryClient.invalidateQueries({
+                queryKey:["AuditLog",data.id]
+            });
             toast.success(`Card "${data.title}" updated✨`);
             disableEditing();
             setDescription(data.description!);

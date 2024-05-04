@@ -25,7 +25,7 @@ model Board {
   imageLinkHTML String   @db.Text
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  lists          List[]
+  lists         List[]
 }
 
 model List {
@@ -34,7 +34,7 @@ model List {
   order     Int
   boardId   String
   board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
-  cards      Card[]
+  cards     Card[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -52,4 +52,31 @@ model Card {
   updatedAt   DateTime @updatedAt
 
   @@index([listId])
+}
+
+enum ACTION {
+  CREATE
+  UPDATE
+  DELETE
+}
+
+enum ENTITY_TYPE {
+  BOARD
+  LIST
+  CARD
+}
+
+model AuditLog {
+  id         String      @id @default(uuid())
+  orgId      String
+  action     ACTION
+  entityId   String
+  entityTitle   String
+  entityType ENTITY_TYPE
+  userId     String
+  userImage  String      @db.Text
+  username   String      @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

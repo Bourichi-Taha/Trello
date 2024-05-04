@@ -32,6 +32,9 @@ const Header = (props:HeaderProps) => {
             queryClient.invalidateQueries({
                 queryKey:["card",data.id]
             });
+            queryClient.invalidateQueries({
+                queryKey:["AuditLog",data.id]
+            });
             toast.success(`Card "${data.title}" renamed✨`);
             setTitle(data.title);
         },
